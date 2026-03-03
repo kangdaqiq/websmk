@@ -54,4 +54,28 @@ class PublicController extends Controller
         return view('public.contact', compact('settings'));
     }
 
+    public function virtualTour()
+    {
+        $settings = Setting::pluck('value', 'key')->toArray();
+
+        $rooms = [
+            ['id' => 'halaman-1', 'title' => 'Halaman Depan (1)', 'category' => 'Halaman Depan'],
+            ['id' => 'halaman-2', 'title' => 'Halaman Depan (2)', 'category' => 'Halaman Depan'],
+            ['id' => 'halaman-3', 'title' => 'Halaman Depan (3)', 'category' => 'Halaman Depan'],
+            ['id' => 'kelas-1', 'title' => 'Ruang Kelas 1', 'category' => 'Ruang Kelas'],
+            ['id' => 'kelas-2', 'title' => 'Ruang Kelas 2', 'category' => 'Ruang Kelas'],
+            ['id' => 'kelas-3', 'title' => 'Ruang Kelas 3', 'category' => 'Ruang Kelas'],
+            ['id' => 'workshop-tb', 'title' => 'Workshop Tata Busana', 'category' => 'Workshop'],
+            ['id' => 'workshop-tsm', 'title' => 'Workshop Teknik Sepeda Motor', 'category' => 'Workshop'],
+        ];
+
+        // Tandai ruangan mana saja yang fotonya sudah ada
+        foreach ($rooms as &$room) {
+            $room['available'] = file_exists(public_path('images/tour/' . $room['id'] . '.jpg'));
+            $room['image'] = asset('images/tour/' . $room['id'] . '.jpg');
+        }
+
+        return view('public.virtual-tour', compact('settings', 'rooms'));
+    }
+
 }

@@ -13,6 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- AlpineJS for interactivity -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @stack('styles')
     <style>
         .glass-nav {
             background: rgba(255, 255, 255, 0.92);
@@ -69,7 +70,7 @@
             opacity: 0;
             visibility: hidden;
         }
-        
+
         body.loading {
             overflow: hidden;
         }
@@ -77,7 +78,7 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-50 text-gray-800 flex flex-col min-h-screen loading">
-    
+
     <!-- Preloader -->
     <div id="preloader">
         <div class="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
@@ -208,6 +209,14 @@
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('posts', 'post') ? 'bg-primary-50 text-primary-600' : '' }}">Berita</a>
                     <a href="{{ route('galleries') }}"
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('galleries') ? 'bg-primary-50 text-primary-600' : '' }}">Galeri</a>
+                    <a href="{{ route('virtual-tour') }}"
+                        class="flex items-center gap-1.5 px-4 py-2 rounded-full text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 font-medium transition-all duration-200 {{ request()->routeIs('virtual-tour') ? 'bg-indigo-50 text-indigo-600' : '' }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 00-2 2v4a2 2 0 002 2h9a2 2 0 002-2v-4a2 2 0 00-2-2H3z" />
+                        </svg>
+                        Virtual Tour
+                    </a>
 
                     <!-- Dropdown Aplikasi -->
                     <div class="relative" x-data="{ dropdownOpen: false }" @mouseenter="dropdownOpen = true"
@@ -229,15 +238,14 @@
                             x-transition:leave="transition ease-in duration-75"
                             x-transition:leave-start="transform opacity-100 scale-100"
                             x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 pt-1 w-48 z-50"
-                            style="display: none;">
+                            class="absolute right-0 pt-1 w-48 z-50" style="display: none;">
                             <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-                                <a href="https://erapor.smkassuniyah.sch.id"
-                                    target="_blank" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">E-Rapor</a>
-                                <a href="https://sispendik.smkassuniyah.sch.id"
-                                    target="_blank" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors border-t border-gray-50">Sispendik</a>
-                                <a href="https://absen.smkassuniyah.sch.id"
-                                    target="_blank" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors border-t border-gray-50">Sistem
+                                <a href="https://erapor.smkassuniyah.sch.id" target="_blank"
+                                    class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">E-Rapor</a>
+                                <a href="https://sispendik.smkassuniyah.sch.id" target="_blank"
+                                    class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors border-t border-gray-50">Sispendik</a>
+                                <a href="https://absen.smkassuniyah.sch.id" target="_blank"
+                                    class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors border-t border-gray-50">Sistem
                                     Absensi</a>
                             </div>
                         </div>
@@ -251,13 +259,14 @@
                     <a href="{{ route('about') }}"
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('about') ? 'bg-primary-50 text-primary-600' : '' }}">Tentang
                         Kami</a>
-                        
+
                     <div class="ml-4 pl-4 border-l border-gray-200 flex items-center">
                         <a href="{{ Route::has('register') ? route('register') : '#' }}"
                             class="inline-flex items-center gap-2 px-5 py-2.5 border border-transparent text-sm font-bold rounded-full text-white bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
                             SPMB (Pendaftaran)
                             <span class="flex h-2 w-2 relative">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                             </span>
                         </a>
@@ -297,6 +306,14 @@
                     class="block px-4 py-3 rounded-lg text-base font-medium {{ request()->routeIs('posts', 'post') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">Berita</a>
                 <a href="{{ route('galleries') }}"
                     class="block px-4 py-3 rounded-lg text-base font-medium {{ request()->routeIs('galleries') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">Galeri</a>
+                <a href="{{ route('virtual-tour') }}"
+                    class="flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium {{ request()->routeIs('virtual-tour') ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-indigo-50' }}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 00-2 2v4a2 2 0 002 2h9a2 2 0 002-2v-4a2 2 0 00-2-2H3z" />
+                    </svg>
+                    Virtual Tour
+                </a>
 
                 <!-- Mobile Dropdown Aplikasi -->
                 <div x-data="{ mobileAppOpen: false }" class="border-t border-b border-gray-100 py-1 my-1">
@@ -330,7 +347,8 @@
                         class="flex items-center justify-center gap-2 w-full text-center px-4 py-3 border border-transparent text-base font-bold rounded-lg text-white bg-primary-600 hover:bg-primary-700 shadow-md">
                         SPMB (Pendaftaran)
                         <span class="flex h-3 w-3 relative">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-200 opacity-75"></span>
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-200 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
                         </span>
                     </a>
@@ -566,14 +584,15 @@
         })();
 
         // Preloader auto-hide on window load
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // Add a small delay for smoother transition
-            setTimeout(function() {
+            setTimeout(function () {
                 document.body.classList.remove('loading');
                 document.body.classList.add('loaded');
             }, 300);
         });
     </script>
+    @stack('scripts')
 </body>
 
 </html>
