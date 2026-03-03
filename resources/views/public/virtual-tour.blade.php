@@ -211,14 +211,13 @@ const SCENES = @json($rooms);
 
 // Hotspot connections — isi setelah cek koordinat dengan mode debug
 const HOTSPOTS = {
-    // Contoh format (uncomment & sesuaikan koordinat):
-    // 'halaman-1': [
-    //     { targetScene: 'halaman-2', pitch: -5,  yaw: 80,  label: '→ Halaman 2' },
-    //     { targetScene: 'kelas-1',   pitch: -10, yaw: 150, label: '→ Kelas 1'   },
-    // ],
+    'halaman-1': [
+        { targetScene: 'halaman-2', pitch: -1.76, yaw: 4.74, label: '→ Halaman 2' },
+    ],
+    // Tambah hotspot dari Halaman 2 setelah koordinat dikirim
     // 'halaman-2': [
-    //     { targetScene: 'halaman-1', pitch: -5, yaw: -100, label: '← Halaman 1' },
-    //     { targetScene: 'halaman-3', pitch: -5, yaw: 80,   label: '→ Halaman 3' },
+    //     { targetScene: 'halaman-1', pitch: ..., yaw: ..., label: '← Halaman 1' },
+    //     { targetScene: 'halaman-3', pitch: ..., yaw: ..., label: '→ Halaman 3' },
     // ],
 };
 
