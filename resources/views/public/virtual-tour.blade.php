@@ -215,7 +215,8 @@ const HOTSPOTS = {
         { targetScene: 'halaman-2', pitch: -1.76, yaw: 4.74, label: '→ Halaman 2' },
     ],
     'halaman-2': [
-        { targetScene: 'halaman-3', pitch: 0.20, yaw: -3.39, label: '→ Halaman 3' },
+        { targetScene: 'halaman-3', pitch:  0.20, yaw:  -3.39, label: '→ Halaman 3' },
+        { targetScene: 'halaman-1', pitch: -2.03, yaw: 178.91, label: '← Halaman 1' },
     ],
 };
 
