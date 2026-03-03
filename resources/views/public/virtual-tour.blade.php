@@ -97,64 +97,142 @@
             opacity: .5;
         }
 
-        /* Sembunyikan loading bawaan Pannellum — biarkan crossfade yang bicara */
+        
+        /* Sembunyikan loading bawaan Pannellum � biarkan crossfade yang bicara */
         .pnlm-load-box,
         .pnlm-lbar,
         .pnlm-lbar-fill,
-        .pnlm-lmsg {
-            display: none !important;
-        }
+        .pnlm-lmsg { display: none !important; }
 
-        /* NAV ARROW HOTSPOT — gaya Street View */
-        .nav-arrow {
+        /* STREET VIEW HOTSPOT */
+        .sv-hotspot {
+            width: 50px !important;
+            height: 50px !important;
+            margin-left: -25px !important;
+            margin-top: -25px !important;
+            border-radius: 50% !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: 3px solid rgba(255, 255, 255, 0.8) !important;
             cursor: pointer !important;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            width: auto !important;
-            height: auto !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 4px !important;
-            transform-origin: center bottom !important;
+            /* Putar elemen 3D agar terlihat pipih di tanah */
+            transform: rotateX(65deg) !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;
         }
 
-        .nav-arrow:hover {
-            transform: scale(1.15) !important;
+        .sv-hotspot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            border-top: 4px solid white;
+            border-right: 4px solid white;
+            transform: translate(-50%, -30%) rotate(-45deg);
+            transition: all 0.3s ease;
         }
 
-        .nav-arrow svg {
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .6));
-            transition: filter .2s;
+        .sv-hotspot:hover {
+            background: rgba(255, 255, 255, 0.6) !important;
+            transform: rotateX(65deg) scale(1.15) !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6) !important;
         }
 
-        .nav-arrow:hover svg {
-            filter: drop-shadow(0 4px 14px rgba(99, 102, 241, .9));
+        .sv-hotspot:hover::after {
+            transform: translate(-50%, -70%) rotate(-45deg);
         }
 
-        .nav-arrow .nav-lbl {
-            color: #fff;
-            font-size: .7rem;
-            font-weight: 700;
+        .sv-label {
+            position: absolute;
             background: rgba(15, 23, 42, .7);
             backdrop-filter: blur(6px);
-            padding: .15rem .5rem;
+            color: #fff;
+            padding: .2rem .6rem;
             border-radius: 99px;
+            font-size: .75rem;
+            font-weight: 700;
             white-space: nowrap;
-            opacity: 0;
-            transform: translateY(4px);
-            transition: opacity .2s, transform .2s;
             pointer-events: none;
+            transform: rotateX(-65deg) translate(-50%, -40px);
+            opacity: 0;
+            transition: opacity 0.2s;
+            margin-left: 25px;
         }
 
-        .nav-arrow:hover .nav-lbl {
+        .sv-hotspot:hover .sv-label { opacity: 1; }
+        .sv-hotspot .pnlm-tooltip { display: none !important; }
+
+
+        /* STREET VIEW HOTSPOT (TANPA SVG, MURNI CSS!) */
+        .sv-hotspot {
+            width: 50px !important;
+            height: 50px !important;
+            margin-left: -25px !important;
+            margin-top: -25px !important;
+            border-radius: 50% !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: 3px solid rgba(255, 255, 255, 0.8) !important;
+            cursor: pointer !important;
+            /* Putar elemen 3D agar terlihat pipih di tanah */
+            transform: rotateX(65deg) !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .sv-hotspot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            border-top: 4px solid white;
+            border-right: 4px solid white;
+            /* Atur offset translate kemudian rotate untuk panah (chevron) */
+            transform: translate(-50%, -30%) rotate(-45deg);
+            transition: all 0.3s ease;
+        }
+
+        .sv-hotspot:hover {
+            background: rgba(255, 255, 255, 0.6) !important;
+            transform: rotateX(65deg) scale(1.15) !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        .sv-hotspot:hover::after {
+            transform: translate(-50%, -70%) rotate(-45deg);
+        }
+
+        /* Label tooltip kustom yang bisa transisi fade in saat hover */
+        .sv-label {
+            position: absolute;
+            background: rgba(15, 23, 42, .7);
+            backdrop-filter: blur(6px);
+            color: #fff;
+            padding: .2rem .6rem;
+            border-radius: 99px;
+            font-size: .75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            /* Matikan pointer-events agar tidak mem-block klik hotspot */
+            pointer-events: none;
+            /* Karena parent (hotspot) sudah ter-rotateX(65deg), ini akan terlihat pipih.
+                   Untuk menghindari itu, cukup andalkan parent positioning atau 
+                   Gantikan teks langsung di dalamnya.
+                   Tapi kita bisa membalikkannya: */
+            transform: rotateX(-65deg) translate(-50%, -40px);
+            opacity: 0;
+            transition: opacity 0.2s;
+            margin-left: 25px;
+        }
+
+        .sv-hotspot:hover .sv-label {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        /* Sembunyikan tooltip default Pannellum untuk hotspot kita */
-        .nav-arrow+.pnlm-tooltip {
+        /* Sembunyikan default tooltip yg nempel */
+        .sv-hotspot .pnlm-tooltip {
             display: none !important;
         }
 
@@ -321,28 +399,19 @@
                 return;
             }
 
-            // Buat tampilan panah navigasi gaya Street View
-            function makeArrow(div, args) {
-                div.classList.add('nav-arrow');
-                div.innerHTML = `
-                    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <filter id="arrowGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-                                <feColorMatrix in="blur" type="matrix"
-                                    values="0 0 0 0 0.4  0 0 0 0 0.4  0 0 0 0 1  0 0 0 0.7 0" result="c"/>
-                                <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
-                            </filter>
-                        </defs>
-                        <ellipse cx="26" cy="48" rx="10" ry="3" fill="rgba(0,0,0,0.3)"/>
-                        <path d="M26 3 L45 43 L26 34 L7 43 Z" fill="white" fill-opacity="0.92" filter="url(#arrowGlow)"/>
-                        <path d="M26 3 L45 43 L26 34 L7 43 Z" fill="none" stroke="rgba(140,150,255,0.7)" stroke-width="1.5"/>
-                    </svg>
-                    <span class="nav-lbl">${args.label}</span>
-                `;
+            
+            // ANIMASI ZOOM IN (BERJALAN MENDIKAT) KETIKA KLIK!
+            function triggerStreetViewWalk(evt, args) {
+                if (!viewer) return;
+                const fov = viewer.getHfov();
+                // Zoom-in menghadap hotspot
+                viewer.lookAt(args.pitch, args.yaw, Math.max(fov - 30, 40), 600);
+                setTimeout(() => {
+                    viewer.loadScene(args.targetScene);
+                }, 650);
             }
 
-            // Build multi-scene config dengan createTooltipFunc
+            // Build multi-scene config
             const scenesConfig = {};
             available.forEach(room => {
                 scenesConfig[room.id] = {
@@ -354,25 +423,23 @@
                         .map(h => ({
                             pitch: h.pitch,
                             yaw: h.yaw,
-                            type: 'scene',
-                            sceneId: h.targetScene,
-                            createTooltipFunc: makeArrow,
-                            createTooltipArgs: { label: h.label },
+                            type: 'info', 
+                            cssClass: 'sv-hotspot',
+                            clickHandlerFunc: triggerStreetViewWalk,
+                            clickHandlerArgs: { targetScene: h.targetScene, pitch: h.pitch, yaw: h.yaw },
+                            createTooltipFunc: function(elem) {
+                                elem.innerHTML = '<div class="sv-label">' + h.label + '</div>';
+                            }
                         })),
                 };
             });
 
             const firstId = available[0].id;
 
-            const fallback = setTimeout(() => {
-                document.getElementById('tour-loading') &&
-                    (document.getElementById('tour-loading').style.display = 'none');
-            }, 12000);
-
             viewer = pannellum.viewer('panorama', {
                 default: {
                     firstScene: firstId,
-                    sceneFadeDuration: 1200,
+                    sceneFadeDuration: 600,
                     autoLoad: true,
                     autoRotate: -2,
                     compass: false,
@@ -384,7 +451,9 @@
             });
 
             viewer.on('load', () => {
-                clearTimeout(fallback);
+                setTimeout(() => {
+                    if (viewer.getHfov() < 110) viewer.setHfov(110);
+                }, 100);
                 const id = viewer.getScene();
                 if (id) updateInfo(id);
                 if (debugMode) attachDebug();
