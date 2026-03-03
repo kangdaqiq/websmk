@@ -3,35 +3,48 @@
 
 @section('content')
     <!-- Hero Section -->
-    <div class="relative overflow-hidden min-h-screen flex items-center bg-cover bg-center bg-no-repeat"
-        style="background-image: url('{{ asset('images/about-cover.jpg') }}');">
+    <div class="relative overflow-hidden min-h-screen flex items-center"
+        x-data="{
+            activeSlide: 0,
+            slides: [
+                '{{ asset('images/banner1.jpg') }}',
+                '{{ asset('images/banner2.jpg') }}',
+                '{{ asset('images/banner3.jpg') }}'
+            ],
+            init() {
+                setInterval(() => {
+                    this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+                }, 5000);
+            }
+        }">
+        
+        <!-- Background Slider -->
+        <template x-for="(slide, index) in slides" :key="index">
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                 :class="activeSlide === index ? 'opacity-100 scale-105' : 'opacity-0 scale-100'"
+                 :style="`transition: all 2s ease-in-out; background-image: url('${slide}');`">
+            </div>
+        </template>
+
         <!-- Overlay -->
-        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="absolute inset-0 bg-black/60 z-0"></div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-12">
 
                 <!-- Hero Content -->
                 <div class="w-full max-w-3xl pt-10" data-aos="fade-up">
-                    <div
-                        class="inline-flex items-center px-4 py-2 rounded-full border border-white/30 bg-black/20 text-white text-sm font-semibold mb-6 backdrop-blur-md">
-                        <span class="flex h-2 w-2 relative mr-2">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
-                        </span>
-                        Selamat Datang di Generasi Cemerlang
-                    </div>
+                    
 
                     <h1
                         class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight mb-6 hidden md:block">
-                        <span class="block drop-shadow-lg">Bersama</span>
+                        <span class="block drop-shadow-lg"></span>
                         <span
                             class="block text-primary-400 drop-shadow-lg">{{ $settings['school_name'] ?? 'Sekolah Kita' }}</span>
                     </h1>
                     <!-- Mobile heading -->
                     <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6 md:hidden">
-                        <span class="block drop-shadow-md">Bersama</span>
+                        <span class="block drop-shadow-md"></span>
                         <span
                             class="block text-primary-400 drop-shadow-md">{{ $settings['school_name'] ?? 'Sekolah Kita' }}</span>
                     </h1>
@@ -695,12 +708,11 @@
                 x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
                 <!-- Close button -->
                 <button @click="lightboxOpen = false"
-                    class="absolute -top-12 right-0 text-white hover:text-gray-300 transition flex items-center gap-2 text-sm font-medium">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="fixed top-6 right-6 z-[10000] bg-white/10 hover:bg-white/20 p-2 rounded-full text-white backdrop-blur-md transition flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                         </path>
                     </svg>
-                    Tutup
                 </button>
                 <!-- Image -->
                 <img :src="lightboxSrc" :alt="lightboxTitle"
