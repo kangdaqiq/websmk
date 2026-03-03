@@ -13,7 +13,11 @@ class PublicController extends Controller
     {
         $settings = Setting::pluck('value', 'key')->toArray();
         $posts = Post::where('status', 'published')->latest()->take(3)->get();
-        return view('public.index', compact('settings', 'posts'));
+        $galleries = Gallery::latest()->take(8)->get();
+
+        $teachers = \App\Models\Teacher::all();
+
+        return view('public.index', compact('settings', 'posts', 'galleries', 'teachers'));
     }
 
     public function posts()
