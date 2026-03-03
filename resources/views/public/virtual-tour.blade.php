@@ -351,16 +351,37 @@ function toggleDebug() {
 }
 
 function attachDebug() {
-    const canvas = document.querySelector('#panorama canvas');
-    if (!canvas) return;
-    canvas.addEventListener('mousemove', function(e) {
+    const container = document.getElementById('panorama');
+    if (!container || !viewer) return;
+
+    // Hapus listener lama dulu
+    if (window._debugHandler) {
+        container.removeEventListener('mousemove', window._debugHandler);
+    }
+
+    window._debugHandler = function(e) {
         if (!viewer || !debugMode) return;
         try {
             const coords = viewer.mouseEventToCoords(e);
-            document.getElementById('dbg-pitch').textContent = coords[0].toFixed(2);
-            document.getElementById('dbg-yaw').textContent   = coords[1].toFixed(2);
-        } catch(err) {}
-    });
+            if (coords && coords.length === 2) {
+                document.getElementById('dbg-pitch').textContent = coords[0].toFixed(2) + '°';
+                document.getElementById('dbg-yaw').textContent   = coords[1].toFixed(2) + '°';
+            }
+        } catch(err) {
+            // Fallback: hitung manual dari posisi mouse dan viewport
+            const rect = container.getBoundingClientRect();
+            const mx   = e.clientX - rect.left;
+            const my   = e.clientY - rect.top;
+            const yawOff   = ((mx / rect.width)  - 0.5) * viewer.getHfov();
+            const pitchOff = ((my / rect.height) - 0.5) * -viewer.getHfov() * (rect.height / rect.width);
+            const pitch = viewer.getPitch() + pitchOff;
+            const yaw   = viewer.getYaw()   + yawOff;
+            document.getElementById('dbg-pitch').textContent = pitch.toFixed(2) + '°';
+            document.getElementById('dbg-yaw').textContent   = yaw.toFixed(2)   + '°';
+        }
+    };
+
+    container.addEventListener('mousemove', window._debugHandler);
 }
 
 // ===== INIT =====
