@@ -166,10 +166,68 @@ php artisan storage:link
 
 ---
 
-## 10. Konfigurasi Nginx
+## 10. Konfigurasi Web Server
+
+Pilih salah satu: **Apache** atau **Nginx**.
+
+---
+
+### ✅ Option A — Apache (Direkomendasikan jika sudah pakai Apache)
 
 ```bash
-sudo apt install -y nginx
+sudo apt install -y apache2 libapache2-mod-php8.2
+
+# Aktifkan modul yang dibutuhkan
+sudo a2enmod rewrite headers php8.2
+sudo systemctl restart apache2
+```
+
+Buat file virtual host:
+
+```bash
+sudo nano /etc/apache2/sites-available/websmk.conf
+```
+
+Isi konfigurasi berikut:
+
+```apache
+<VirtualHost *:80>
+    ServerName domain-anda.com
+    ServerAlias www.domain-anda.com
+    DocumentRoot /var/www/html/website/public
+
+    <Directory /var/www/html/website/public>
+        AllowOverride All
+        Options -Indexes +FollowSymLinks
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/websmk_error.log
+    CustomLog ${APACHE_LOG_DIR}/websmk_access.log combined
+</VirtualHost>
+```
+
+```bash
+# Aktifkan site & nonaktifkan default
+sudo a2ensite websmk.conf
+sudo a2dissite 000-default.conf
+
+# Tes konfigurasi
+sudo apache2ctl configtest
+
+# Restart Apache
+sudo systemctl restart apache2
+```
+
+> **Penting:** Pastikan file `.htaccess` di folder `public/` ada dan dapat dibaca. Laravel sudah menyertakannya secara default.
+
+---
+
+### Option B — Nginx
+
+```bash
+sudo apt install -y nginx php8.2-fpm
+sudo systemctl enable php8.2-fpm
 sudo nano /etc/nginx/sites-available/websmk
 ```
 
@@ -179,7 +237,7 @@ Isi konfigurasi berikut:
 server {
     listen 80;
     server_name domain-anda.com www.domain-anda.com;
-    root /var/www/websmk/public;
+    root /var/www/html/website/public;
     index index.php;
 
     charset utf-8;
@@ -210,7 +268,7 @@ server {
 ```bash
 # Aktifkan site
 sudo ln -s /etc/nginx/sites-available/websmk /etc/nginx/sites-enabled/
-sudo nginx -t      # tes konfigurasi
+sudo nginx -t
 sudo systemctl restart nginx
 sudo systemctl restart php8.2-fpm
 ```
@@ -219,6 +277,13 @@ sudo systemctl restart php8.2-fpm
 
 ## 11. (Opsional) SSL dengan Let's Encrypt
 
+Untuk **Apache**:
+```bash
+sudo apt install -y certbot python3-certbot-apache
+sudo certbot --apache -d domain-anda.com -d www.domain-anda.com
+```
+
+Untuk **Nginx**:
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d domain-anda.com -d www.domain-anda.com
