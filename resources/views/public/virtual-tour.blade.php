@@ -190,27 +190,23 @@
                             @endforeach
                         </div>
 
-                        {{-- Room cards --}}
+                        {{-- Room cards - badge dan state dikelola JS --}}
                         <div class="space-y-3 overflow-y-auto max-h-[55vh] pr-1" id="room-list">
                             @foreach($rooms as $i => $room)
-                                <div class="room-card {{ !$room['available'] ? 'locked' : '' }} bg-gray-50 rounded-xl p-3 flex items-center gap-3"
-                                    data-id="{{ $room['id'] }}" data-index="{{ $i }}" data-category="{{ $room['category'] }}"
-                                    data-title="{{ $room['title'] }}" data-image="{{ $room['image'] }}"
-                                    data-available="{{ $room['available'] ? 'true' : 'false' }}" onclick="selectRoom(this)">
+                                <div class="room-card bg-gray-50 rounded-xl p-3 flex items-center gap-3"
+                                    id="card-{{ $room['id'] }}" data-id="{{ $room['id'] }}" data-index="{{ $i }}"
+                                    data-category="{{ $room['category'] }}" data-title="{{ $room['title'] }}"
+                                    data-image="{{ $room['image'] }}" data-available="false" onclick="selectRoom(this)">
 
-                                    {{-- Icon / thumb --}}
-                                    <div
+                                    {{-- Thumb --}}
+                                    <div id="thumb-{{ $room['id'] }}"
                                         class="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden bg-indigo-100 flex items-center justify-center">
-                                        @if($room['available'])
-                                            <img src="{{ $room['image'] }}" alt="{{ $room['title'] }}"
-                                                class="w-full h-full object-cover">
-                                        @else
-                                            <svg class="w-6 h-6 text-indigo-300" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 00-2 2v4a2 2 0 002 2h9a2 2 0 002-2v-4a2 2 0 00-2-2H3z" />
-                                            </svg>
-                                        @endif
+                                        {{-- diisi JS --}}
+                                        <svg class="w-6 h-6 text-indigo-200 animate-pulse" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 00-2 2v4a2 2 0 002 2h9a2 2 0 002-2v-4a2 2 0 00-2-2H3z" />
+                                        </svg>
                                     </div>
 
                                     <div class="flex-1 min-w-0">
@@ -218,17 +214,10 @@
                                         <p class="text-xs text-gray-500">{{ $room['category'] }}</p>
                                     </div>
 
-                                    <div class="flex-shrink-0">
-                                        @if($room['available'])
-                                            <span
-                                                class="inline-flex items-center gap-1 text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Live
-                                            </span>
-                                        @else
-                                            <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                                                Segera
-                                            </span>
-                                        @endif
+                                    <div id="badge-{{ $room['id'] }}" class="flex-shrink-0">
+                                        {{-- Badge diupdate JS --}}
+                                        <span
+                                            class="text-xs font-bold text-gray-300 bg-gray-100 px-2 py-0.5 rounded-full">Checking...</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -249,6 +238,50 @@
         let viewer = null;
         let activeIdx = null;
 
+        // ======= CEK GAMBAR VIA JS (tidak pakai file_exists PHP) =======
+        function checkImage(url) {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url + '?_t=' + Date.now(); // bypass cache
+            });
+        }
+
+        async function initRooms() {
+            for (const room of rooms) {
+                const exists = await checkImage(room.image);
+                const card = document.getElementById('card-' + room.id);
+                const badge = document.getElementById('badge-' + room.id);
+                const thumb = document.getElementById('thumb-' + room.id);
+
+                if (exists) {
+                    room.available = true;
+                    card.dataset.available = 'true';
+                    card.style.cursor = 'pointer';
+
+                    // Badge Live
+                    badge.innerHTML = `<span class="inline-flex items-center gap-1 text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Live
+                    </span>`;
+
+                    // Thumbnail
+                    thumb.innerHTML = `<img src="${room.image}" alt="${room.title}" class="w-full h-full object-cover">`;
+                } else {
+                    room.available = false;
+                    card.dataset.available = 'false';
+                    card.style.cursor = 'not-allowed';
+
+                    // Badge Segera
+                    badge.innerHTML = `<span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">Segera</span>`;
+                }
+            }
+
+            // Auto-open ruangan pertama yang tersedia
+            const firstAvailable = document.querySelector('.room-card[data-available="true"]');
+            if (firstAvailable) selectRoom(firstAvailable);
+        }
+
         // ======= SELECT ROOM =======
         function selectRoom(el) {
             if (el.dataset.available !== 'true') return;
@@ -258,23 +291,16 @@
             const title = el.dataset.title;
             const cat = el.dataset.category;
 
-            // Highlight card
             document.querySelectorAll('.room-card').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
-
             activeIdx = idx;
 
-            // Update info bar
             document.getElementById('viewer-title').textContent = title;
             document.getElementById('viewer-cat').textContent = cat;
-
-            // Show loading
             document.getElementById('tour-loading').classList.remove('hidden');
 
-            // Destroy old viewer
             if (viewer) { viewer.destroy(); viewer = null; }
 
-            // Init Pannellum
             viewer = pannellum.viewer('panorama', {
                 type: 'equirectangular',
                 panorama: image,
@@ -292,7 +318,7 @@
             updateNav();
         }
 
-        // ======= NAV PREV / NEXT (skip unavailable) =======
+        // ======= NAV PREV / NEXT =======
         function findNext(from, dir) {
             let idx = from;
             for (let i = 0; i < rooms.length; i++) {
@@ -312,9 +338,7 @@
 
             prev.disabled = findNext(activeIdx, -1) === null;
             next.disabled = findNext(activeIdx, 1) === null;
-            ctr.textContent = availableRooms.length
-                ? `${pos + 1} / ${availableRooms.length} ruangan`
-                : '';
+            ctr.textContent = availableRooms.length ? `${pos + 1} / ${availableRooms.length} ruangan` : '';
         }
 
         document.getElementById('btn-prev').addEventListener('click', () => {
@@ -322,7 +346,6 @@
             const idx = findNext(activeIdx, -1);
             if (idx !== null) selectRoom(document.querySelector(`[data-index="${idx}"]`));
         });
-
         document.getElementById('btn-next').addEventListener('click', () => {
             if (activeIdx === null) return;
             const idx = findNext(activeIdx, 1);
@@ -335,24 +358,17 @@
                 b.classList.remove('bg-indigo-600', 'text-white');
                 b.classList.add('bg-gray-100', 'text-gray-600');
             });
-            const active = document.getElementById(
-                cat === 'all' ? 'cat-all' : 'cat-' + cat.toLowerCase().replace(/\s+/g, '-')
-            );
+            const active = document.getElementById(cat === 'all' ? 'cat-all' : 'cat-' + cat.toLowerCase().replace(/\s+/g, '-'));
             if (active) {
                 active.classList.remove('bg-gray-100', 'text-gray-600');
                 active.classList.add('bg-indigo-600', 'text-white');
             }
-
             document.querySelectorAll('.room-card').forEach(card => {
-                card.parentElement.style.display =
-                    (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+                card.parentElement.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
             });
         }
 
-        // ======= AUTO-OPEN first available room =======
-        window.addEventListener('DOMContentLoaded', () => {
-            const first = document.querySelector('.room-card[data-available="true"]');
-            if (first) selectRoom(first);
-        });
+        // ======= INIT =======
+        window.addEventListener('DOMContentLoaded', initRooms);
     </script>
 @endpush

@@ -69,9 +69,9 @@ class PublicController extends Controller
             ['id' => 'workshop-tsm', 'title' => 'Workshop Teknik Sepeda Motor', 'category' => 'Workshop'],
         ];
 
-        // Tandai ruangan mana saja yang fotonya sudah ada
+        // Tandai ruangan mana saja yang fotonya sudah ada (dicek client-side via JS)
         foreach ($rooms as &$room) {
-            $room['available'] = file_exists(public_path('images/tour/' . $room['id'] . '.jpg'));
+            $room['available'] = true; // JS akan verifikasi apakah gambar benar-benar ada
             $room['image'] = asset('images/tour/' . $room['id'] . '.jpg');
         }
 
