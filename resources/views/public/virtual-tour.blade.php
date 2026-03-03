@@ -68,8 +68,7 @@
         }
 
         #tour-loading.hidden {
-            opacity: 0;
-            pointer-events: none;
+            display: none;
         }
 
         /* scrollbar kategori */
@@ -143,7 +142,7 @@
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                                 </svg>
-                                <p class="text-sm text-gray-300">Pilih ruangan di panel kanan untuk memulai tour</p>
+                                <p id="loading-text" class="text-sm text-gray-300">Pilih ruangan di panel kanan untuk memulai tour</p>
                             </div>
                             <div id="panorama"></div>
                         </div>
@@ -296,22 +295,31 @@
             activeIdx = idx;
 
             document.getElementById('viewer-title').textContent = title;
-            document.getElementById('viewer-cat').textContent = cat;
-            document.getElementById('tour-loading').classList.remove('hidden');
+            document.getElementById('viewer-cat').textContent   = cat;
+
+            const loading = document.getElementById('tour-loading');
+            const loadingText = document.getElementById('loading-text');
+            loading.style.display = 'flex';
+            loadingText.textContent = 'Memuat panorama...';
 
             if (viewer) { viewer.destroy(); viewer = null; }
 
+            // Timeout fallback: sembunyikan overlay setelah 10 detik
+            const hideLoading = () => { loading.style.display = 'none'; };
+            const fallback = setTimeout(hideLoading, 10000);
+
             viewer = pannellum.viewer('panorama', {
-                type: 'equirectangular',
-                panorama: image,
-                autoLoad: true,
-                autoRotate: -2,
-                compass: false,
-                showZoomCtrl: true,
+                type              : 'equirectangular',
+                panorama          : image,
+                autoLoad          : true,
+                autoRotate        : -2,
+                compass           : false,
+                showZoomCtrl      : true,
                 showFullscreenCtrl: true,
-                hfov: 110,
+                hfov              : 110,
                 onLoad: function () {
-                    document.getElementById('tour-loading').classList.add('hidden');
+                    clearTimeout(fallback);
+                    hideLoading();
                 }
             });
 
