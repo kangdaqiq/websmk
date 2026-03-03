@@ -214,11 +214,9 @@ const HOTSPOTS = {
     'halaman-1': [
         { targetScene: 'halaman-2', pitch: -1.76, yaw: 4.74, label: '→ Halaman 2' },
     ],
-    // Tambah hotspot dari Halaman 2 setelah koordinat dikirim
-    // 'halaman-2': [
-    //     { targetScene: 'halaman-1', pitch: ..., yaw: ..., label: '← Halaman 1' },
-    //     { targetScene: 'halaman-3', pitch: ..., yaw: ..., label: '→ Halaman 3' },
-    // ],
+    'halaman-2': [
+        { targetScene: 'halaman-3', pitch: 0.20, yaw: -3.39, label: '→ Halaman 3' },
+    ],
 };
 
 // =====================================================================
