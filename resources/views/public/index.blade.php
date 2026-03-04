@@ -4,18 +4,18 @@
 @section('content')
     <!-- Hero Section -->
     <div class="relative overflow-hidden min-h-screen flex items-center" x-data="{
-                activeSlide: 0,
-                slides: [
-                    '{{ asset('images/banner1.jpg') }}',
-                    '{{ asset('images/banner2.jpg') }}',
-                    '{{ asset('images/banner3.jpg') }}'
-                ],
-                init() {
-                    setInterval(() => {
-                        this.activeSlide = (this.activeSlide + 1) % this.slides.length;
-                    }, 5000);
-                }
-            }">
+                    activeSlide: 0,
+                    slides: [
+                        '{{ secure_asset('images/banner1.jpg') }}',
+                        '{{ secure_asset('images/banner2.jpg') }}',
+                        '{{ secure_asset('images/banner3.jpg') }}'
+                    ],
+                    init() {
+                        setInterval(() => {
+                            this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+                        }, 5000);
+                    }
+                }">
 
         <!-- Background Slider -->
         <template x-for="(slide, index) in slides" :key="index">
@@ -381,65 +381,65 @@
 
         <!-- Alpine Carousel Logic -->
         <div x-data="{
-                            activeIndex: 0,
-                            itemsCount: {{ count($teachers) }},
-                            next() {
-                                this.activeIndex = (this.activeIndex + 1) % this.itemsCount;
-                            },
-                            prev() {
-                                this.activeIndex = (this.activeIndex - 1 + this.itemsCount) % this.itemsCount;
-                            },
-                            getStyle(index) {
-                                // Calculate shortest distance in a circular array
-                                let diff = index - this.activeIndex;
+                                activeIndex: 0,
+                                itemsCount: {{ count($teachers) }},
+                                next() {
+                                    this.activeIndex = (this.activeIndex + 1) % this.itemsCount;
+                                },
+                                prev() {
+                                    this.activeIndex = (this.activeIndex - 1 + this.itemsCount) % this.itemsCount;
+                                },
+                                getStyle(index) {
+                                    // Calculate shortest distance in a circular array
+                                    let diff = index - this.activeIndex;
 
-                                // Adjust for wrapping around the ends
-                                if (diff > Math.floor(this.itemsCount / 2)) diff -= this.itemsCount;
-                                if (diff < -Math.floor(this.itemsCount / 2)) diff += this.itemsCount;
+                                    // Adjust for wrapping around the ends
+                                    if (diff > Math.floor(this.itemsCount / 2)) diff -= this.itemsCount;
+                                    if (diff < -Math.floor(this.itemsCount / 2)) diff += this.itemsCount;
 
-                                const absDiff = Math.abs(diff);
+                                    const absDiff = Math.abs(diff);
 
-                                // Visual properties based on distance from center
-                                let translateX = diff * 120; // Base spacing
-                                let scale = 1;
-                                let zIndex = 30;
-                                let opacity = 1;
+                                    // Visual properties based on distance from center
+                                    let translateX = diff * 120; // Base spacing
+                                    let scale = 1;
+                                    let zIndex = 30;
+                                    let opacity = 1;
 
-                                if (absDiff === 0) {
-                                    // Center item
-                                    scale = 1.15;
-                                    zIndex = 40;
-                                } else if (absDiff === 1) {
-                                    // Immediate neighbors
-                                    scale = 0.85;
-                                    zIndex = 30;
-                                    opacity = 0.8;
-                                    translateX = diff * 130; 
-                                } else if (absDiff === 2) {
-                                    // Next neighbors
-                                    scale = 0.65;
-                                    zIndex = 20;
-                                    opacity = 0.5;
-                                    translateX = diff * 110;
-                                } else {
-                                    // Further items (hidden or very small)
-                                    scale = 0.4;
-                                    zIndex = 10;
-                                    opacity = 0;
+                                    if (absDiff === 0) {
+                                        // Center item
+                                        scale = 1.15;
+                                        zIndex = 40;
+                                    } else if (absDiff === 1) {
+                                        // Immediate neighbors
+                                        scale = 0.85;
+                                        zIndex = 30;
+                                        opacity = 0.8;
+                                        translateX = diff * 130; 
+                                    } else if (absDiff === 2) {
+                                        // Next neighbors
+                                        scale = 0.65;
+                                        zIndex = 20;
+                                        opacity = 0.5;
+                                        translateX = diff * 110;
+                                    } else {
+                                        // Further items (hidden or very small)
+                                        scale = 0.4;
+                                        zIndex = 10;
+                                        opacity = 0;
+                                    }
+
+                                    // Adjust positioning for smaller screens
+                                    if (window.innerWidth < 768) {
+                                        translateX = diff * 80;
+                                    }
+
+                                    return `
+                                        transform: translateX(calc(-50% + ${translateX}px)) scale(${scale});
+                                        z-index: ${zIndex};
+                                        opacity: ${opacity};
+                                    `;
                                 }
-
-                                // Adjust positioning for smaller screens
-                                if (window.innerWidth < 768) {
-                                    translateX = diff * 80;
-                                }
-
-                                return `
-                                    transform: translateX(calc(-50% + ${translateX}px)) scale(${scale});
-                                    z-index: ${zIndex};
-                                    opacity: ${opacity};
-                                `;
-                            }
-                        }"
+                            }"
             class="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 h-80 flex justify-center items-center">
 
             <div class="relative w-full h-full flex justify-center items-center">
@@ -487,9 +487,9 @@
         <div class="flex justify-center items-center mt-2 gap-2 pb-8"
             x-data="{ get actIndex() { return document.querySelector('[x-data]').__x.$data.activeIndex } }">
             @foreach($teachers as $index => $teacher)
-                <button onclick="document.querySelector('[x-data]').__x.$data.activeIndex = {{ $index }}"
+                <button @click="activeIndex = {{ $index }}"
                     class="h-2.5 rounded-full transition-all duration-300 focus:outline-none"
-                    :class="actIndex === {{ $index }} ? 'w-8 bg-primary-600 shadow-md transform scale-110' : 'w-2.5 bg-gray-300 hover:bg-gray-400'"></button>
+                    :class="activeIndex === {{ $index }} ? 'w-8 bg-primary-600 shadow-md transform scale-110' : 'w-2.5 bg-gray-300 hover:bg-gray-400'"></button>
             @endforeach
         </div>
     </div>
