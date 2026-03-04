@@ -97,87 +97,29 @@
             opacity: .5;
         }
 
-        
-        /* Sembunyikan loading bawaan Pannellum � biarkan crossfade yang bicara */
+        /* Sembunyikan loading bawaan Pannellum */
         .pnlm-load-box,
         .pnlm-lbar,
         .pnlm-lbar-fill,
-        .pnlm-lmsg { display: none !important; }
-
-        /* STREET VIEW HOTSPOT */
-        .sv-hotspot {
-            width: 50px !important;
-            height: 50px !important;
-            margin-left: -25px !important;
-            margin-top: -25px !important;
-            border-radius: 50% !important;
-            background: rgba(255, 255, 255, 0.2) !important;
-            border: 3px solid rgba(255, 255, 255, 0.8) !important;
-            cursor: pointer !important;
-            /* Putar elemen 3D agar terlihat pipih di tanah */
-            transform: rotateX(65deg) !important;
-            transition: all 0.3s ease !important;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;
+        .pnlm-lmsg {
+            display: none !important;
         }
-
-        .sv-hotspot::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 14px;
-            height: 14px;
-            border-top: 4px solid white;
-            border-right: 4px solid white;
-            transform: translate(-50%, -30%) rotate(-45deg);
-            transition: all 0.3s ease;
-        }
-
-        .sv-hotspot:hover {
-            background: rgba(255, 255, 255, 0.6) !important;
-            transform: rotateX(65deg) scale(1.15) !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6) !important;
-        }
-
-        .sv-hotspot:hover::after {
-            transform: translate(-50%, -70%) rotate(-45deg);
-        }
-
-        .sv-label {
-            position: absolute;
-            background: rgba(15, 23, 42, .7);
-            backdrop-filter: blur(6px);
-            color: #fff;
-            padding: .2rem .6rem;
-            border-radius: 99px;
-            font-size: .75rem;
-            font-weight: 700;
-            white-space: nowrap;
-            pointer-events: none;
-            transform: rotateX(-65deg) translate(-50%, -40px);
-            opacity: 0;
-            transition: opacity 0.2s;
-            margin-left: 25px;
-        }
-
-        .sv-hotspot:hover .sv-label { opacity: 1; }
-        .sv-hotspot .pnlm-tooltip { display: none !important; }
-
 
         /* STREET VIEW HOTSPOT (TANPA SVG, MURNI CSS!) */
         .sv-hotspot {
-            width: 50px !important;
-            height: 50px !important;
-            margin-left: -25px !important;
-            margin-top: -25px !important;
+            width: 60px !important;
+            height: 36px !important;
+            /* lebih pendek → terlihat pipih/flat */
+            margin-left: -30px !important;
+            margin-top: -18px !important;
             border-radius: 50% !important;
-            background: rgba(255, 255, 255, 0.2) !important;
-            border: 3px solid rgba(255, 255, 255, 0.8) !important;
+            /* oval karena width ≠ height */
+            background: rgba(255, 255, 255, 0.25) !important;
+            border: 3px solid rgba(255, 255, 255, 0.9) !important;
             cursor: pointer !important;
-            /* Putar elemen 3D agar terlihat pipih di tanah */
-            transform: rotateX(65deg) !important;
-            transition: all 0.3s ease !important;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+            /* Tidak ada transform agar posisi tetap sesuai koordinat Pannellum */
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 0 4px rgba(255, 255, 255, 0.15) !important;
         }
 
         .sv-hotspot::after {
@@ -189,19 +131,14 @@
             height: 14px;
             border-top: 4px solid white;
             border-right: 4px solid white;
-            /* Atur offset translate kemudian rotate untuk panah (chevron) */
             transform: translate(-50%, -30%) rotate(-45deg);
-            transition: all 0.3s ease;
         }
 
+        /* Hover: hanya ubah warna & shadow, TANPA transform agar tidak lari */
         .sv-hotspot:hover {
-            background: rgba(255, 255, 255, 0.6) !important;
-            transform: rotateX(65deg) scale(1.15) !important;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6) !important;
-        }
-
-        .sv-hotspot:hover::after {
-            transform: translate(-50%, -70%) rotate(-45deg);
+            background: rgba(255, 255, 255, 0.55) !important;
+            border-color: #fff !important;
+            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.25), 0 8px 20px rgba(0, 0, 0, 0.6) !important;
         }
 
         /* Label tooltip kustom yang bisa transisi fade in saat hover */
@@ -217,11 +154,7 @@
             white-space: nowrap;
             /* Matikan pointer-events agar tidak mem-block klik hotspot */
             pointer-events: none;
-            /* Karena parent (hotspot) sudah ter-rotateX(65deg), ini akan terlihat pipih.
-                   Untuk menghindari itu, cukup andalkan parent positioning atau 
-                   Gantikan teks langsung di dalamnya.
-                   Tapi kita bisa membalikkannya: */
-            transform: rotateX(-65deg) translate(-50%, -40px);
+            transform: translate(-50%, -40px);
             opacity: 0;
             transition: opacity 0.2s;
             margin-left: 25px;
@@ -351,26 +284,45 @@
         // ============================================================
         const HOTSPOTS = {
             'halaman-1': [
-                { targetScene: 'halaman-2', pitch: -1.76, yaw: 4.74, label: '→ Halaman 2' },
+                { targetScene: 'halaman-2', pitch: -3.88, yaw: 0.77, label: '→ Halaman 2' },
             ],
             'halaman-2': [
-                { targetScene: 'halaman-3', pitch: 0.20, yaw: -3.39, label: '→ Halaman 3' },
-                { targetScene: 'halaman-1', pitch: -2.03, yaw: 178.91, label: '← Halaman 1' },
+                { targetScene: 'halaman-3', pitch: -5.27, yaw: -9.70, label: '→ Halaman 3' },
+                { targetScene: 'halaman-1', pitch: -5.52, yaw: 175.16, label: '← Halaman 1' },
             ],
             'halaman-3': [
-                { targetScene: 'halaman-2', pitch: -3.24, yaw: 86.78, label: '← Halaman 2' },
+                { targetScene: 'halaman-2', pitch: -6.33, yaw: -161.49, label: '← Halaman 2' },
             ],
         };
 
         let viewer = null;
         let debugMode = false;
 
+        // Zoom in ke arah hotspot lalu pindah scene (menghadap arah tujuan)
+        function triggerStreetViewWalk(evt, args) {
+            if (!viewer) return;
+            viewer.lookAt(args.pitch, args.yaw, 28, 2000);
+            setTimeout(() => {
+                viewer.loadScene(args.targetScene, 0, args.yaw, 110);
+            }, 2100);
+        }
+
         function checkImage(url) {
             return new Promise(resolve => {
                 const img = new Image();
                 img.onload = () => resolve(true);
                 img.onerror = () => resolve(false);
-                img.src = url + '?_nc=' + Date.now();
+                img.src = url; // tanpa cache-busting agar bisa tersimpan di browser cache
+            });
+        }
+
+        // Preload semua foto panorama di background agar loading scene berikutnya instan
+        function preloadAllScenes(rooms) {
+            rooms.forEach(room => {
+                if (room.available) {
+                    const img = new Image();
+                    img.src = room.image;
+                }
             });
         }
 
@@ -394,22 +346,7 @@
             }
 
             const available = SCENES.filter(r => r.available);
-            if (!available.length) {
-                document.getElementById('loading-text').textContent = 'Belum ada foto 360° tersedia.';
-                return;
-            }
-
-            
-            // ANIMASI ZOOM IN (BERJALAN MENDIKAT) KETIKA KLIK!
-            function triggerStreetViewWalk(evt, args) {
-                if (!viewer) return;
-                const fov = viewer.getHfov();
-                // Zoom-in menghadap hotspot
-                viewer.lookAt(args.pitch, args.yaw, Math.max(fov - 30, 40), 600);
-                setTimeout(() => {
-                    viewer.loadScene(args.targetScene);
-                }, 650);
-            }
+            if (!available.length) return;
 
             // Build multi-scene config
             const scenesConfig = {};
@@ -423,11 +360,11 @@
                         .map(h => ({
                             pitch: h.pitch,
                             yaw: h.yaw,
-                            type: 'info', 
+                            type: 'info',
                             cssClass: 'sv-hotspot',
                             clickHandlerFunc: triggerStreetViewWalk,
                             clickHandlerArgs: { targetScene: h.targetScene, pitch: h.pitch, yaw: h.yaw },
-                            createTooltipFunc: function(elem) {
+                            createTooltipFunc: function (elem) {
                                 elem.innerHTML = '<div class="sv-label">' + h.label + '</div>';
                             }
                         })),
@@ -439,9 +376,9 @@
             viewer = pannellum.viewer('panorama', {
                 default: {
                     firstScene: firstId,
-                    sceneFadeDuration: 600,
+                    sceneFadeDuration: 0,
                     autoLoad: true,
-                    autoRotate: -2,
+                    autoRotate: 0,
                     compass: false,
                     showZoomCtrl: true,
                     showFullscreenCtrl: true,
@@ -457,6 +394,8 @@
                 const id = viewer.getScene();
                 if (id) updateInfo(id);
                 if (debugMode) attachDebug();
+                // Preload semua scene lain di background setelah scene pertama tampil
+                setTimeout(() => preloadAllScenes(available), 1500);
             });
 
             viewer.on('scenechange', id => {

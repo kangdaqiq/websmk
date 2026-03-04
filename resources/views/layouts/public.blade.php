@@ -261,7 +261,7 @@
                         Kami</a>
 
                     <div class="ml-4 pl-4 border-l border-gray-200 flex items-center">
-                        <a href="{{ Route::has('register') ? route('register') : '#' }}"
+                        <a href="https://spmb.smkassuniyah.sch.id/"
                             class="inline-flex items-center gap-2 px-5 py-2.5 border border-transparent text-sm font-bold rounded-full text-white bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
                             SPMB (Pendaftaran)
                             <span class="flex h-2 w-2 relative">
@@ -432,7 +432,7 @@
                     <ul class="space-y-2 text-gray-400">
                         @if (Route::has('register'))
                             <li>
-                                <a href="{{ route('register') }}"
+                                <a href="https://spmb.smkassuniyah.sch.id/" target="_blank"
                                     class="hover:text-primary-400 transition-colors flex items-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -442,15 +442,6 @@
                                 </a>
                             </li>
                         @endif
-                        <li>
-                            <a href="#" class="hover:text-primary-400 transition-colors flex items-center">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                                Login Siswa
-                            </a>
-                        </li>
                         <li>
                             <a href="{{ route('posts') }}"
                                 class="hover:text-primary-400 transition-colors flex items-center">
@@ -468,7 +459,8 @@
                     <h4 class="text-lg font-semibold mb-4 text-white">Aplikasi Internal</h4>
                     <ul class="space-y-2 text-gray-400">
                         <li>
-                            <a href="#" class="hover:text-primary-400 transition-colors flex items-center">
+                            <a href="https://erapor.smkassuniyah.sch.id/" target="_blank"
+                                class="hover:text-primary-400 transition-colors flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
@@ -477,7 +469,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="hover:text-primary-400 transition-colors flex items-center">
+                            <a href="https://sispendik.smkassuniyah.sch.id/" target="_blank"
+                                class="hover:text-primary-400 transition-colors flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
@@ -487,7 +480,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="hover:text-primary-400 transition-colors flex items-center">
+                            <a href="https://absen.smkassuniyah.sch.id/" target="_blank"
+                                class="hover:text-primary-400 transition-colors flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
