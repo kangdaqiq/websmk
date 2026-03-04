@@ -3,26 +3,25 @@
 
 @section('content')
     <!-- Hero Section -->
-    <div class="relative overflow-hidden min-h-screen flex items-center"
-        x-data="{
-            activeSlide: 0,
-            slides: [
-                '{{ asset('images/banner1.jpg') }}',
-                '{{ asset('images/banner2.jpg') }}',
-                '{{ asset('images/banner3.jpg') }}'
-            ],
-            init() {
-                setInterval(() => {
-                    this.activeSlide = (this.activeSlide + 1) % this.slides.length;
-                }, 5000);
-            }
-        }">
-        
+    <div class="relative overflow-hidden min-h-screen flex items-center" x-data="{
+                activeSlide: 0,
+                slides: [
+                    '{{ asset('images/banner1.jpg') }}',
+                    '{{ asset('images/banner2.jpg') }}',
+                    '{{ asset('images/banner3.jpg') }}'
+                ],
+                init() {
+                    setInterval(() => {
+                        this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+                    }, 5000);
+                }
+            }">
+
         <!-- Background Slider -->
         <template x-for="(slide, index) in slides" :key="index">
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                 :class="activeSlide === index ? 'opacity-100 scale-105' : 'opacity-0 scale-100'"
-                 :style="`transition: all 2s ease-in-out; background-image: url('${slide}');`">
+                :class="activeSlide === index ? 'opacity-100 scale-105' : 'opacity-0 scale-100'"
+                :style="`transition: all 2s ease-in-out; background-image: url('${slide}');`">
             </div>
         </template>
 
@@ -34,7 +33,7 @@
 
                 <!-- Hero Content -->
                 <div class="w-full max-w-3xl pt-10" data-aos="fade-up">
-                    
+
 
                     <h1
                         class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight mb-6 hidden md:block">
@@ -54,7 +53,7 @@
                     </p>
 
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                        <a href="#"
+                        <a href="https://spmb.smkassuniyah.sch.id/" target="_blank"
                             class="group relative inline-flex items-center justify-center px-8 py-3.5 text-base font-bold text-white bg-primary-600 rounded-full overflow-hidden shadow-lg shadow-primary-600/30 hover:shadow-primary-600/50 transition-all duration-300 hover:-translate-y-1">
                             <span
                                 class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
@@ -382,65 +381,65 @@
 
         <!-- Alpine Carousel Logic -->
         <div x-data="{
-                        activeIndex: 0,
-                        itemsCount: {{ count($teachers) }},
-                        next() {
-                            this.activeIndex = (this.activeIndex + 1) % this.itemsCount;
-                        },
-                        prev() {
-                            this.activeIndex = (this.activeIndex - 1 + this.itemsCount) % this.itemsCount;
-                        },
-                        getStyle(index) {
-                            // Calculate shortest distance in a circular array
-                            let diff = index - this.activeIndex;
+                            activeIndex: 0,
+                            itemsCount: {{ count($teachers) }},
+                            next() {
+                                this.activeIndex = (this.activeIndex + 1) % this.itemsCount;
+                            },
+                            prev() {
+                                this.activeIndex = (this.activeIndex - 1 + this.itemsCount) % this.itemsCount;
+                            },
+                            getStyle(index) {
+                                // Calculate shortest distance in a circular array
+                                let diff = index - this.activeIndex;
 
-                            // Adjust for wrapping around the ends
-                            if (diff > Math.floor(this.itemsCount / 2)) diff -= this.itemsCount;
-                            if (diff < -Math.floor(this.itemsCount / 2)) diff += this.itemsCount;
+                                // Adjust for wrapping around the ends
+                                if (diff > Math.floor(this.itemsCount / 2)) diff -= this.itemsCount;
+                                if (diff < -Math.floor(this.itemsCount / 2)) diff += this.itemsCount;
 
-                            const absDiff = Math.abs(diff);
+                                const absDiff = Math.abs(diff);
 
-                            // Visual properties based on distance from center
-                            let translateX = diff * 120; // Base spacing
-                            let scale = 1;
-                            let zIndex = 30;
-                            let opacity = 1;
+                                // Visual properties based on distance from center
+                                let translateX = diff * 120; // Base spacing
+                                let scale = 1;
+                                let zIndex = 30;
+                                let opacity = 1;
 
-                            if (absDiff === 0) {
-                                // Center item
-                                scale = 1.15;
-                                zIndex = 40;
-                            } else if (absDiff === 1) {
-                                // Immediate neighbors
-                                scale = 0.85;
-                                zIndex = 30;
-                                opacity = 0.8;
-                                translateX = diff * 130; 
-                            } else if (absDiff === 2) {
-                                // Next neighbors
-                                scale = 0.65;
-                                zIndex = 20;
-                                opacity = 0.5;
-                                translateX = diff * 110;
-                            } else {
-                                // Further items (hidden or very small)
-                                scale = 0.4;
-                                zIndex = 10;
-                                opacity = 0;
+                                if (absDiff === 0) {
+                                    // Center item
+                                    scale = 1.15;
+                                    zIndex = 40;
+                                } else if (absDiff === 1) {
+                                    // Immediate neighbors
+                                    scale = 0.85;
+                                    zIndex = 30;
+                                    opacity = 0.8;
+                                    translateX = diff * 130; 
+                                } else if (absDiff === 2) {
+                                    // Next neighbors
+                                    scale = 0.65;
+                                    zIndex = 20;
+                                    opacity = 0.5;
+                                    translateX = diff * 110;
+                                } else {
+                                    // Further items (hidden or very small)
+                                    scale = 0.4;
+                                    zIndex = 10;
+                                    opacity = 0;
+                                }
+
+                                // Adjust positioning for smaller screens
+                                if (window.innerWidth < 768) {
+                                    translateX = diff * 80;
+                                }
+
+                                return `
+                                    transform: translateX(calc(-50% + ${translateX}px)) scale(${scale});
+                                    z-index: ${zIndex};
+                                    opacity: ${opacity};
+                                `;
                             }
-
-                            // Adjust positioning for smaller screens
-                            if (window.innerWidth < 768) {
-                                translateX = diff * 80;
-                            }
-
-                            return `
-                                transform: translateX(calc(-50% + ${translateX}px)) scale(${scale});
-                                z-index: ${zIndex};
-                                opacity: ${opacity};
-                            `;
-                        }
-                    }"
+                        }"
             class="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 h-80 flex justify-center items-center">
 
             <div class="relative w-full h-full flex justify-center items-center">

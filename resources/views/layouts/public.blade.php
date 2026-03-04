@@ -257,8 +257,7 @@
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('contact') ? 'bg-primary-50 text-primary-600' : '' }}">Kontak</a>
 
                     <a href="{{ route('about') }}"
-                        class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('about') ? 'bg-primary-50 text-primary-600' : '' }}">Tentang
-                        Kami</a>
+                        class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('about') ? 'bg-primary-50 text-primary-600' : '' }}">About</a>
 
                     <div class="ml-4 pl-4 border-l border-gray-200 flex items-center">
                         <a href="https://spmb.smkassuniyah.sch.id/"
