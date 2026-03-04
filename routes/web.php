@@ -13,7 +13,7 @@ Route::get('/berita/{post:slug}', [PublicController::class, 'post'])->name('post
 Route::get('/galeri', [PublicController::class, 'galleries'])->name('galleries');
 Route::get('/tentang', [PublicController::class, 'about'])->name('about');
 Route::get('/kontak', [PublicController::class, 'contact'])->name('contact');
-Route::get('/virtual-tour', [PublicController::class, 'virtualTour'])->name('virtual-tour');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
