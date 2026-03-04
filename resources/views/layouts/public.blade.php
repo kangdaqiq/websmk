@@ -209,14 +209,14 @@
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('posts', 'post') ? 'bg-primary-50 text-primary-600' : '' }}">Berita</a>
                     <a href="{{ route('galleries') }}"
                         class="px-4 py-2 rounded-full text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-all duration-200 {{ request()->routeIs('galleries') ? 'bg-primary-50 text-primary-600' : '' }}">Galeri</a>
-                    <a href="{{ route('virtual-tour') }}"
+                    <!-- <a href="{{ route('virtual-tour') }}"
                         class="flex items-center gap-1.5 px-4 py-2 rounded-full text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 font-medium transition-all duration-200 {{ request()->routeIs('virtual-tour') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 00-2 2v4a2 2 0 002 2h9a2 2 0 002-2v-4a2 2 0 00-2-2H3z" />
                         </svg>
                         Virtual Tour
-                    </a>
+                    </a> -->
 
                     <!-- Dropdown Aplikasi -->
                     <div class="relative" x-data="{ dropdownOpen: false }" @mouseenter="dropdownOpen = true"
@@ -306,14 +306,14 @@
                     class="block px-4 py-3 rounded-lg text-base font-medium {{ request()->routeIs('posts', 'post') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">Berita</a>
                 <a href="{{ route('galleries') }}"
                     class="block px-4 py-3 rounded-lg text-base font-medium {{ request()->routeIs('galleries') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">Galeri</a>
-                <a href="{{ route('virtual-tour') }}"
+                <!-- <a href="{{ route('virtual-tour') }}"
                     class="flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium {{ request()->routeIs('virtual-tour') ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-indigo-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 00-2 2v4a2 2 0 002 2h9a2 2 0 002-2v-4a2 2 0 00-2-2H3z" />
                     </svg>
                     Virtual Tour
-                </a>
+                </a> -->
 
                 <!-- Mobile Dropdown Aplikasi -->
                 <div x-data="{ mobileAppOpen: false }" class="border-t border-b border-gray-100 py-1 my-1">
